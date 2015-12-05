@@ -6,13 +6,16 @@ import android.util.Log;
 import android.view.View;
 
 import com.kite.joco.retro1jacksondownloadsugar.entity.Dolgozok;
+import com.kite.joco.retro1jacksondownloadsugar.entity.Partner;
 import com.kite.joco.retro1jacksondownloadsugar.rest.DownloadAPI;
 import com.kite.joco.retro1jacksondownloadsugar.rest.ServiceGenerator;
+import com.orm.SugarRecord;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -47,6 +50,26 @@ public class MainActivity extends AppCompatActivity {
         //for (Nyomtatvany ny:nyomtatvanyList){
          //   Log.i("Nyomtatvany","Kod " +ny.getNyomtKod());
        // }
+
+        service.getAsyncListofPartner(new Callback<List<Partner>>() {
+            @Override
+            public void success(List<Partner> partners, Response response) {
+                Calendar newcal = Calendar.getInstance(new Locale("HU"));
+                Log.i("A mentés elkezdődött: ", newcal.getTime().toString());
+                /*for (Partner p : partners){
+                    p.save();
+                }*/
+                SugarRecord.saveInTx(partners);
+                Calendar lastcal = Calendar.getInstance(new Locale("HU"));
+                Log.i("A mentés befejeződött: ", lastcal.getTime().toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.i("error", " nem sikerült a partnerek feldolgozása"+ error.getMessage());
+            }
+        });
+
         Calendar c = new GregorianCalendar(1970,1,1,10,5);
 
 
@@ -58,14 +81,14 @@ public class MainActivity extends AppCompatActivity {
         service.getDolgozokbyModiTime(timestamp, new Callback<List<Dolgozok>>() {
             @Override
             public void success(List<Dolgozok> dolgozoks, Response response) {
-                for (Dolgozok dolgozo : dolgozoks){
-                    Log.i("Dolgozok",dolgozo.getNev());
+                for (Dolgozok dolgozo : dolgozoks) {
+                    Log.i("Dolgozok", dolgozo.getNev());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.i("Dolgozok ido szerint","failure" + error.getResponse() + error.getMessage());
+                Log.i("Dolgozok ido szerint", "failure" + error.getResponse() + error.getMessage());
             }
         });
 

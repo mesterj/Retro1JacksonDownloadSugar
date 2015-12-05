@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Joco on 2015.11.28..
  */
-public class Dolgozok extends SugarRecord<Dolgozok>{
+public class Dolgozok extends SugarRecord{
     private String tosz;
     private String nev;
     private String beosztas;

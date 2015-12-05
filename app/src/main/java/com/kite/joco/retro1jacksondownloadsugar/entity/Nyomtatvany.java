@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Joco on 2015.11.28..
  */
-public class Nyomtatvany extends SugarRecord<Nyomtatvany> {
+public class Nyomtatvany extends SugarRecord {
 
     private String nyomtKod;
 

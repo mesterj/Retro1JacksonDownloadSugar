@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Joco on 2015.11.28..
  */
-public class Partner extends SugarRecord<Partner> {
+public class Partner extends SugarRecord {
 
     private String partnerKod;
 
