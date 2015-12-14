@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i(LOGTAG,"Object.find nem jött be partnerkod"+ ex.getMessage());
         }
 
+
+
         try {
             ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
         }
