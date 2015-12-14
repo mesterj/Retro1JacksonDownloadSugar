@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String LOGTAG = "PROBA";
     EditText etPsKod;
+    String ps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public void searchByPs(View v) {
         String keresett = etPsKod.getText().toString();
         try {
-            List<Partner> partnerList = Partner.find(Partner.class, "partnerKod = ?", "100022");
+            List<Partner> partnerList = Partner.find(Partner.class, "partner_kod = ?", "100022");
             //Log.i(LOGTAG,NamingHelper.toSQLName(Partner.fie));
             if (partnerList == null) {
                 Log.i(LOGTAG, "Object.find nem sikerült");
@@ -118,12 +119,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            List<Partner> partners = Select.from(Partner.class).where(Condition.prop("PARTNERKOD").eq(keresett)).list();
-            if (partners == null) {
-                Log.i(LOGTAG, "Select.from nem jött be. ");
+            ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
+        }
+        catch (NoSuchFieldException nex ){
+            Log.i(LOGTAG,nex.getMessage());
+            ps = "partner_kod";
+        }
+        try {
+
+            //String ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
+            Log.i(LOGTAG,"A naminghelper által megtalált mezőnév a partnerKod-hoz:" + ps);
+            List<Partner> partners = Select.from(Partner.class).where(Condition.prop(ps).eq(keresett)).list();
+            if (partners == null || partners.size() == 0 ) {
+                Log.i(LOGTAG, "Select.from NamingHelperrel nem jött be. ");
             } else {
                 Partner p = partners.get(0);
-                Log.i(LOGTAG, "Tanáltam egy partnert a select.from-mal: " + p.getPartnerNev());
+                Log.i(LOGTAG, "Tanáltam egy partnert a select.from naminHelperrel: " + p.getPartnerNev());
                 Toast.makeText(this, "Talált partner" + p.getPartnerNev(), Toast.LENGTH_LONG).show();
             }
         }catch (Exception ex){
