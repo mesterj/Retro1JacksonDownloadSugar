@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Retro1JacksonDownloadSugar.iml" filepath="$PROJECT_DIR$/Retro1JacksonDownloadSugar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sugar/sugar.iml" filepath="$PROJECT_DIR$/sugar/sugar.iml" />
     </modules>
   </component>
 </project>

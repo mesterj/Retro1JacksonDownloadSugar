@@ -39,6 +39,7 @@
         android:layout_height="wrap_content" />
 
     <AutoCompleteTextView
+        android:id="@+id/atvSearchNev"
         android:layout_below="@+id/bntSearchbyPs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
