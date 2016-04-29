@@ -29,8 +29,12 @@ public interface DownloadAPI {
     @GET("/com.joco.nyomtserv2.nyomtatvany")
     public List<Nyomtatvany> getListofNyomtatvany();
 
-    @GET("/com.joco.nyomtserv2.partner")
+//    @GET("/com.joco.nyomtserv2.partner")
+//   public void getAsyncListofPartner(Callback<List<Partner>> callback);
+
+    @GET("/entities.partner")
     public void getAsyncListofPartner(Callback<List<Partner>> callback);
+
 
     @GET("/com.joco.nyomtserv2.dolgozok")
     public void getAsyncListofDolgozok(Callback<List<Dolgozok>> callback);

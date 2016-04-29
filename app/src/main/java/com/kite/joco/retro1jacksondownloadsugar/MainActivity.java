@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         Calendar c = new GregorianCalendar(1970,1,1,10,5);
 
 
-        Date d = c.getTime();
+     /*   Date d = c.getTime();
         //long timestamp = Calendar.getInstance().getTime() / 1000
         long timestamp = c.getTimeInMillis() / 1000;
         Log.i("real timestamp", " " + timestamp);
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             public void failure(RetrofitError error) {
                 Log.i("Dolgozok ido szerint", "failure" + error.getResponse() + error.getMessage());
             }
-        });
+        });*/
 
     }
 
@@ -179,16 +179,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
+            ps = NamingHelper.toSQLName(Partner.class.getField("partner_kod"));
         }
         catch (NoSuchFieldException nex ){
-            Log.i(LOGTAG,nex.getMessage());
+            Log.i(LOGTAG,nex.getMessage()+" partner_kod nem jó");
             ps = "partner_kod";
         }
         try {
 
             //String ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
-            Log.i(LOGTAG,"A naminghelper által megtalált mezőnév a partnerKod-hoz:" + ps);
+            //Log.i(LOGTAG,"A naminghelper által megtalált mezőnév a partnerKod-hoz:" + ps);
             List<Partner> partners = Select.from(Partner.class).where(Condition.prop(ps).eq(keresett)).list();
             if (partners == null || partners.size() == 0 ) {
                 Log.i(LOGTAG, "Select.from NamingHelperrel nem jött be. ");

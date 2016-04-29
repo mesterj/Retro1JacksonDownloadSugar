@@ -33,5 +33,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okhttp:okhttp-android-support:2.5.0'
-    compile project(':library')
+    compile 'com.github.satyan:sugar:1.5'
+    //compile project(':library')
 }
