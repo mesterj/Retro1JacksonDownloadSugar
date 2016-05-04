@@ -51,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
         etPsKod = (EditText) findViewById(R.id.etPskod);
 
 //        Field [] fields = SugarDb.class.getDeclaredFields();
-        String [] psdb_nev = {"valami"};
-        Log.i(LOGTAG,"A Partner db valódi neve: "+ psdb_nev);
-        Log.i(LOGTAG,"A partnerKod mező neve: " +NamingHelper.toSQLNameDefault("partnerKod"));
-        Cursor c = SugarRecord.getCursor(Partner.class," partner_nev = ?",psdb_nev,null,null,null);
+        String[] psdb_nev = {"valami"};
+        Log.i(LOGTAG, "A Partner db valódi neve: " + psdb_nev);
+        Log.i(LOGTAG, "A partnerKod mező neve: " + NamingHelper.toSQLNameDefault("partnerKod"));
+        Log.i(LOGTAG, "A partnerNev mező neve: " + NamingHelper.toSQLNameDefault("partnerNev"));
+        Cursor c = SugarRecord.getCursor(Partner.class, " partner_nev = ?", psdb_nev, null, null, null);
 
                 /*Log.i(LOGTAG, "Getting fields");
         for (int i=0;i<fields.length;i++){
@@ -63,41 +64,40 @@ public class MainActivity extends AppCompatActivity {
 
         atvSearchByNev = (AutoCompleteTextView) findViewById(R.id.atvSearchNev);
 
-        mAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,null,
-                new String[] {ContactsContract.Contacts.DISPLAY_NAME},new int[]{android.R.id.text1},0);
+        String[] columns = {"PARTNER_NEV", "PARTNER_KOD"};
+        int[] cols = new int[]{android.R.id.text1};
+
+        mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null,
+                columns, cols);
 
 
-    atvSearchByNev.setAdapter(mAdapter);
+        atvSearchByNev.setAdapter(mAdapter);
 
-    /*mAdapter.setFilterQueryProvider(new FilterQueryProvider() {
-        @Override
-        public Cursor runQuery(CharSequence constraint) {
-            return null;
-        }
-    });
+        mAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence constraint) {
+                return getCursor(constraint);
+            }
+        });
 
-    mAdapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
-        @Override
-        public CharSequence convertToString(Cursor cursor) {
-            return null;
-        }
-    });
+        mAdapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            @Override
+            public CharSequence convertToString(Cursor cursor) {
+                int j = cursor.getColumnIndex("PARTNER_NEV");
+                return cursor.getString(j);
+            }
+        });
+
+    }
 
     public Cursor getCursor(CharSequence str) {
-        Iterator<Partner> cursor = Select.from(Partner.class).where(Condition.prop("partner_nev").like("%" + str + "%")).iterator();
-        //SugarRecord.findAsIterator(Partner.class," partner_nev =? ", "%"+str+"%").
-
-        //db = ((Application)SugarApp.sc.obtainDatabase();
-        //SugarContext sc = SugarContext.getSugarContext();
-
-
-        //Cursor c = SugarCursorFactory.newCursor((Application) SugarApp.getSugarContext()).obtainDatabase()
-        //Cursor ujcursor = cursor.
-    }*/
-}
+        String nevcolname = "PARTNER_NEV";
+        Cursor c = Select.from(Partner.class).orderBy(nevcolname).where(Condition.prop(nevcolname).like("%" + str + "%")).getCursor();
+        return c;
+    }
 
 
-    public void onClick(View v){
+    public void onClick(View v) {
         DownloadAPI service = ServiceGenerator.createService(DownloadAPI.class);
        /* service.getAsyncListofNyomtatvany(new Callback<List<Nyomtatvany>>() {
             @Override
@@ -116,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
         //Log.i("kod",service.toString());
         //List<Nyomtatvany> nyomtatvanyList = service.getListofNyomtatvany();
         //for (Nyomtatvany ny:nyomtatvanyList){
-         //   Log.i("Nyomtatvany","Kod " +ny.getNyomtKod());
-       // }
+        //   Log.i("Nyomtatvany","Kod " +ny.getNyomtKod());
+        // }
 
         service.getAsyncListofPartner(new Callback<List<Partner>>() {
             @Override
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Calendar c = new GregorianCalendar(1970,1,1,10,5);
+        Calendar c = new GregorianCalendar(1970, 1, 1, 10, 5);
 
 
      /*   Date d = c.getTime();
@@ -177,12 +177,10 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
 
-
         try {
             ps = NamingHelper.toSQLName(Partner.class.getField("partner_kod"));
-        }
-        catch (NoSuchFieldException nex ){
-            Log.i(LOGTAG,nex.getMessage()+" partner_kod nem jó");
+        } catch (NoSuchFieldException nex) {
+            Log.i(LOGTAG, nex.getMessage() + " partner_kod nem jó");
             ps = "partner_kod";
         }
         try {
@@ -190,15 +188,15 @@ public class MainActivity extends AppCompatActivity {
             //String ps = NamingHelper.toSQLName(Partner.class.getField("partnerKod"));
             //Log.i(LOGTAG,"A naminghelper által megtalált mezőnév a partnerKod-hoz:" + ps);
             List<Partner> partners = Select.from(Partner.class).where(Condition.prop(ps).eq(keresett)).list();
-            if (partners == null || partners.size() == 0 ) {
+            if (partners == null || partners.size() == 0) {
                 Log.i(LOGTAG, "Select.from NamingHelperrel nem jött be. ");
             } else {
                 Partner p = partners.get(0);
                 Log.i(LOGTAG, "Tanáltam egy partnert a select.from naminHelperrel: " + p.getPartnerNev());
                 Toast.makeText(this, "Talált partner" + p.getPartnerNev(), Toast.LENGTH_LONG).show();
             }
-        }catch (Exception ex){
-            Log.i(LOGTAG,"Select nem jött be"+ex.getMessage());
+        } catch (Exception ex) {
+            Log.i(LOGTAG, "Select nem jött be" + ex.getMessage());
         }
     }
 
