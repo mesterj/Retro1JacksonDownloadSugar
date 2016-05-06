@@ -15,6 +15,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.kite.joco.retro1jacksondownloadsugar.adapter.PartnerCurAdapter;
 import com.kite.joco.retro1jacksondownloadsugar.entity.Dolgozok;
 import com.kite.joco.retro1jacksondownloadsugar.entity.Partner;
 import com.kite.joco.retro1jacksondownloadsugar.rest.DownloadAPI;
@@ -70,8 +71,19 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null,
                 columns, cols);
 
+        PartnerCurAdapter mPartnerCursorAdapter = new PartnerCurAdapter(this,null,true);
 
-        atvSearchByNev.setAdapter(mAdapter);
+        mPartnerCursorAdapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence constraint) {
+                return getCursor(constraint);
+            }
+        });
+
+
+        atvSearchByNev.setAdapter(mPartnerCursorAdapter);
+
+        //atvSearchByNev.setAdapter(mAdapter);
 
         mAdapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
